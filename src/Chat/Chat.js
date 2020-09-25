@@ -11,7 +11,7 @@ class Chat extends Component {
     super(props, context);
     this.state = {
       shop: {},
-      messages: [],
+      messages: []
     };
   }
 
@@ -27,13 +27,25 @@ class Chat extends Component {
     }, 1000);
   }
 
+  send = (message) => {
+    let messages = this.state.messages.concat(message);
+    const reply = answersData.find((answer) => answer.tags.includes(message.text));
+    if (reply) {
+      messages = messages.concat(reply)
+    }
+    this.setState({
+      messages,
+    });
+  };
+
+
   render() {
     const { shop, messages } = this.state;
     return (
       <main className="Chat">
         <ChatHeader shop={shop} />
         <ChatBox messages={messages} />
-        <ChatInput />
+        <ChatInput sendMessage={this.send}/>
       </main>
     );
   }
